@@ -6,6 +6,15 @@ import sys
 def file_ext(file):
     return file.split('.')[-1]
 
+
+def change_ext(file, ext):
+    parts = file.split('.')
+    parts[-1] = ext
+    # HACK: drop non-sense things
+    parts = [parts[0], parts[-1]]
+    return '.'.join(parts)
+
+
 def main(argv):
     VID_EXTS={'mkv'}
     SUB_EXTS={'srt'}
@@ -22,13 +31,11 @@ def main(argv):
 
     vids.sort()
     subs.sort()
-    missing_vids = max(len(subs) - len(vids), 0)
-    missing_subs = max(len(vids) - len(subs), 0)
-    vids += [None] * missing_vids
-    subs += [None] * missing_subs
+    assert len(vids) == len(subs)
 
     for i in range(len(vids)):
-        print(vids[i], subs[i])
+        new_vid = change_ext(subs[i], file_ext(vids[i]))
+        print(f"mv '{vids[i]}' '{new_vid}'")
 
 
 if __name__ == '__main__':
