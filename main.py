@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import shlex
 import sys
 
 
@@ -34,8 +35,9 @@ def main(argv):
     assert len(vids) == len(subs)
 
     for i in range(len(vids)):
-        new_vid = change_ext(subs[i], file_ext(vids[i]))
-        print(f"mv '{vids[i]}' '{new_vid}'")
+        old_vid = shlex.quote(vids[i])
+        new_vid = shlex.quote(change_ext(subs[i], file_ext(vids[i])))
+        print(f"mv {old_vid} {new_vid}")
 
 
 if __name__ == '__main__':
